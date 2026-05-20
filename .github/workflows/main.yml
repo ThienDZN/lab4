@@ -1,0 +1,31 @@
+name: Build EXE for Win7 x64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2019
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup Python 3.8
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.8'
+
+    - name: Install PyInstaller
+      run: |
+        pip install pyinstaller==5.13.2
+
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile lab4_safe_keylogger.py
+
+    - name: Upload EXE
+      uses: actions/upload-artifact@v4
+      with:
+        name: Win7-EXE
+        path: dist/*.exe
